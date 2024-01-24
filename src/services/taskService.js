@@ -10,9 +10,9 @@ async function getAllTasks() {
 	}
 }
 
-async function createTask(title, description) {
+async function createTask(title, description, isFavorite = false, dueDate = null) {
 	try {
-		const newTask = new Task({ title, description });
+		const newTask = new Task({ title, description, isFavorite, dueDate });
 		await newTask.save();
 		return newTask;
 	} catch (error) {
@@ -36,11 +36,11 @@ async function getTaskById(taskId) {
 	}
 }
 
-async function updateTask(taskId, title, description) {
+async function updateTask(taskId, title, description, isFavorite = false, dueDate = null) {
 	try {
 		const updatedTask = await Task.findByIdAndUpdate(
 			taskId,
-			{ title, description },
+			{ title, description, isFavorite, dueDate },
 			{ new: true }
 		);
 
