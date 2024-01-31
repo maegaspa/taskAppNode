@@ -2,7 +2,8 @@ const taskService = require('../services/taskService');
 
 async function getAllTasks(req, res) {
 	try {
-		const tasks = await taskService.getAllTasks();
+		const userId = req.userId;
+		const tasks = await taskService.getAllTasks(userId);
 		res.json(tasks);
 	} catch (error) {
 		console.error('Error handling getAllTasks:', error);
@@ -12,8 +13,9 @@ async function getAllTasks(req, res) {
 
 async function createTask(req, res) {
 	try {
+		const userId = req.userId;
 		const { title, description, isFavorite, dueDate } = req.body;
-		const newTask = await taskService.createTask(title, description, isFavorite, dueDate);
+		const newTask = await taskService.createTask(userId, title, description, isFavorite, dueDate);
 		res.status(201).json(newTask);
 	} catch (error) {
 		console.error('Error handling createTask:', error);

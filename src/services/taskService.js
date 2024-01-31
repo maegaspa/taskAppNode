@@ -1,8 +1,8 @@
 const Task = require('../models/Task');
 
-async function getAllTasks() {
+async function getAllTasks(userId) {
 	try {
-		const tasks = await Task.find();
+		const tasks = await Task.find({ user: userId });
 		return tasks;
 	} catch (error) {
 		console.error('Error getting tasks:', error);
@@ -10,9 +10,9 @@ async function getAllTasks() {
 	}
 }
 
-async function createTask(title, description, isFavorite = false, dueDate = null) {
+async function createTask(userId, title, description, isFavorite = false, dueDate = null) {
 	try {
-		const newTask = new Task({ title, description, isFavorite, dueDate });
+		const newTask = new Task({ user: userId, title, description, isFavorite, dueDate });
 		await newTask.save();
 		return newTask;
 	} catch (error) {
