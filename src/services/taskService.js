@@ -56,14 +56,15 @@ async function updateTask(taskId, title, description, isFavorite = false, dueDat
 }
 
 async function deleteTask(taskId) {
+
 	try {
-		const deletedTask = await Task.findByIdAndRemove(taskId);
+		const deletedTask = await Task.findByIdAndDelete(taskId);
 
 		if (!deletedTask) {
 			throw new Error('Task not found');
 		}
 
-		return { message: 'Task deleted successfully' };
+		return deletedTask;
 	} catch (error) {
 		console.error('Error deleting task:', error);
 		throw new Error('Internal Server Error');

@@ -49,8 +49,8 @@ async function updateTask(req, res) {
 async function deleteTask(req, res) {
 	try {
 		const taskId = req.params.taskId;
-		await taskService.deleteTask(taskId);
-		res.json({ message: 'Task deleted successfully' });
+		const deletedTask = await taskService.deleteTask(taskId);
+		res.json(deletedTask);
 	} catch (error) {
 		console.error('Error handling deleteTask:', error);
 		res.status(500).json({ error: error.message || 'Internal Server Error' });
