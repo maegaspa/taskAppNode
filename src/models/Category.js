@@ -22,10 +22,6 @@ const categorySchema = new mongoose.Schema({
 	},
 	budget: {
 		type     : Number,
-		validate : {
-			validator : Number.isInteger(),
-			message   : '{VALUE} is not an integer value'
-		}
 	},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
