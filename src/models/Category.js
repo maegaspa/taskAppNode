@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
+	type: {
+		type: String,
+		enum: {
+			values: ['Project', 'Vacation', 'Shopping'],
+			message: '{VALUE} is not a valid type of category.'
+		},
+		required: true
+	},
 	name: {
 		type: String,
 		required: true,
@@ -16,12 +24,12 @@ const categorySchema = new mongoose.Schema({
 	endDate: {
 		type: Date,
 	},
+	budget: {
+		type     : Number,
+	},
 	createdAt: {
 		type: Date,
 		default:Date.now,
-	},
-	budget: {
-		type     : Number,
 	},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,

@@ -10,9 +10,9 @@ async function getAllCategories(userId) {
 	}
 }
 
-async function createCategory(userId, name, description, startDate = false, endDate = null, budget = 0) {
+async function createCategory(userId, type, name, description, startDate = false, endDate = null, budget = 0) {
 	try {
-		const newCategory = new Category({ user: userId, name, description, startDate, endDate, budget });
+		const newCategory = new Category({ user: userId, type, name, description, startDate, endDate, budget });
 		await newCategory.save();
 		return newCategory;
 	} catch (error) {
@@ -36,11 +36,11 @@ async function getCategoryById(categoryId) {
 	}
 }
 
-async function updateCategory(categoryId, name, description, startDate = null, endDate = null, budget) {
+async function updateCategory(type, categoryId, name, description, startDate = null, endDate = null, budget) {
 	try {
 		const updatedCategory = await Category.findByIdAndUpdate(
 			categoryId,
-			{ name, description, startDate, endDate, budget },
+			{ type, name, description, startDate, endDate, budget },
 			{ new: true }
 		);
 
