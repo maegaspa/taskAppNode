@@ -13,7 +13,7 @@ async function registerUser(username, password) {
 	const newUser = new User({ username, password: hashedPassword });
 	await newUser.save();
 
-	const token = jwt.createToken(newUser._id);
+	const token = jwt.createToken(newUser._id, newUser.username);
 
 	return token;
 }
@@ -24,7 +24,7 @@ async function authenticateUser(username, password) {
 		throw new Error('Invalid username or password');
 	}
 
-	const token = jwt.createToken(user._id);
+	const token = jwt.createToken(user._id, user.username);
 
 	return token;
 }
