@@ -15,7 +15,7 @@ async function createCategory(req, res) {
 	try {
 		const userId = req.userId;
 		const { name, description, startDate, endDate, budget } = req.body;
-		const newCategory = await categoryService.createCategory(userId, name, description, startDate, endDate? BUDGET);
+		const newCategory = await categoryService.createCategory(userId, name, description, startDate, endDate, budget);
 		res.status(201).json(newCategory);
 	} catch (error) {
 		console.error('Error handling createCategory:', error);
