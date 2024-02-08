@@ -1,18 +1,28 @@
 const Task = require('../models/Task');
 
+async function getTasksByCategory(userId, categoryId) {
+	try {
+		const tasks = await Task.find({user: userId, category: categoryId });
+		return tasks;
+	} catch (error) {
+		console.error('Error getting tasks by category:', error);
+		throw new Error('Internal Server Error');
+	}
+}
+
 async function getAllTasks(userId) {
 	try {
 		const tasks = await Task.find({ user: userId });
 		return tasks;
 	} catch (error) {
-		console.error('Error getting tasks:', error);
+		console.error('Error getting all tasks:', error);
 		throw new Error('Internal Server Error');
 	}
 }
 
-async function createTask(userId, title, description, isFavorite = false, dueDate = null) {
+async function createTask(userId, title, description, categoryId = undefined, isFavorite = false, dueDate = null) {
 	try {
-		const newTask = new Task({ user: userId, title, description, isFavorite, dueDate });
+		const newTask = new Task({ user: userId, title, description, category: categoryId, isFavorite, dueDate });
 		await newTask.save();
 		return newTask;
 	} catch (error) {
@@ -36,11 +46,11 @@ async function getTaskById(taskId) {
 	}
 }
 
-async function updateTask(taskId, title, description, isFavorite = false, dueDate = null) {
+async function updateTask(taskId, title, description, categoryId = undefined, isFavorite = false, dueDate = null,) {
 	try {
 		const updatedTask = await Task.findByIdAndUpdate(
 			taskId,
-			{ title, description, isFavorite, dueDate },
+			{ title, description, category: categoryId, isFavorite, dueDate },
 			{ new: true }
 		);
 
@@ -77,4 +87,5 @@ module.exports = {
 	getTaskById,
 	updateTask,
 	deleteTask,
+	getTasksByCategory,
 };

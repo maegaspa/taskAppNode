@@ -4,6 +4,7 @@ const taskController = require('../controllers/taskController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 router.use(authMiddleware); // Middleware d'authentification appliqué à toutes les routes ci-dessous
+router.get('/tasks/categories/:categoryId', taskController.getTasksByCategory);
 router.get('/tasks', taskController.getAllTasks);
 router.post('/tasks', taskController.createTask);
 router.get('/tasks/:taskId', taskController.getTaskById);
