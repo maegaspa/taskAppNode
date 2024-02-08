@@ -5,7 +5,7 @@ async function getAllCategories(userId) {
 		const categories = await Category.find({ user: userId });
 		return categories;
 	} catch (error) {
-		console.error('Error getting categorys:', error);
+		console.error('Error getting categories:', error);
 		throw new Error('Internal Server Error');
 	}
 }

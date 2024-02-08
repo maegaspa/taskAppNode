@@ -20,8 +20,13 @@ async function getAllTasks(userId) {
 	}
 }
 
-async function createTask(userId, title, description, categoryId = undefined, isFavorite = false, dueDate = null) {
+async function createTask(userId, title, description, categoryId, isFavorite = false, dueDate = null) {
 	try {
+		if (categoryId === "") {
+			const newTask = new Task({ user: userId, title, description, isFavorite, dueDate });
+			await newTask.save();
+			return newTask;
+		}
 		const newTask = new Task({ user: userId, title, description, category: categoryId, isFavorite, dueDate });
 		await newTask.save();
 		return newTask;
@@ -46,8 +51,22 @@ async function getTaskById(taskId) {
 	}
 }
 
-async function updateTask(taskId, title, description, categoryId = undefined, isFavorite = false, dueDate = null,) {
+async function updateTask(taskId, title, description, categoryId, isFavorite = false, dueDate = null,) {
 	try {
+		if (categoryId === "") {
+			const updatedTask = await Task.findByIdAndUpdate(
+				taskId,
+				{ title, description, isFavorite, dueDate },
+				{ new: true }
+			);
+
+			if (!updatedTask) {
+				throw new Error('Task not found');
+			}
+
+			return updatedTask;
+		}
+
 		const updatedTask = await Task.findByIdAndUpdate(
 			taskId,
 			{ title, description, category: categoryId, isFavorite, dueDate },
