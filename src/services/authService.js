@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('../config/jwt');
 const User = require('../models/User');
 
-async function registerUser(username, password) {
+async function registerUser(username, password, profilePicture = null) {
 	const existingUser = await User.findOne({ username });
 	if (existingUser) {
 		throw new Error('Username already exists');
@@ -10,7 +10,7 @@ async function registerUser(username, password) {
 
 	const hashedPassword = await bcrypt.hash(password, 10);
 
-	const newUser = new User({ username, password: hashedPassword });
+	const newUser = new User({ username, password: hashedPassword, profilePicture });
 	await newUser.save();
 
 	const token = jwt.createToken(newUser._id, newUser.username);

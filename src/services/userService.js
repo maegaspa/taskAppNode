@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const fs = require('fs/promises');
 
 async function getUserProfile(userId) {
 	try {
@@ -10,9 +11,14 @@ async function getUserProfile(userId) {
 	}
 }
 
-async function updateUserProfile(userId, { username }) {
+async function updateUserProfile(userId, { username, password, profilePicture }) {
 	try {
-		const updatedUser = await User.findByIdAndUpdate(userId, { username }, { new: true });
+		const updatedFields = { username, password };
+		console.error(updatedFields);
+		if (profilePicture) {
+			updatedFields.profilePicture = profilePicture;
+		}
+		const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, { new: true });
 		return updatedUser;
 	} catch (error) {
 		console.error('Error updating user profile:', error);
@@ -20,7 +26,21 @@ async function updateUserProfile(userId, { username }) {
 	}
 }
 
+async function saveProfilePicture(profilePicture) {
+	try {
+		const filename = Date.now() + '-' + profilePicture.originalname;
+		const imagePath = `uploads/${filename}`;
+		await fs.writeFile(imagePath, profilePicture.buffer);
+
+		return imagePath;
+	} catch (error) {
+		console.error('Error saving profile picture:', error);
+		throw new Error('Failed to save profile picture');
+	}
+}
+
 module.exports = {
 	getUserProfile,
 	updateUserProfile,
+	saveProfilePicture,
 };

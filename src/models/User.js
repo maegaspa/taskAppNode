@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	profilePicture: {
+		type: Buffer,
+	},
 });
 
 const User = mongoose.model('User', userSchema);
