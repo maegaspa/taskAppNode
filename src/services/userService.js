@@ -23,9 +23,7 @@ async function updateUserProfile(userId, profilePicture) {
 			const imagePath = `uploads/${filename}`;
 			await fs.writeFile(imagePath, profilePicture.buffer);
 
-			console.log("c'est BREST ICI MDR");
-			console.log(imagePath);
-			updatedFields.profilePicturePath = imagePath;
+			updatedFields.profilePicturePath = profilePicture.path;
 		}
 		const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, { new: true });
 		return updatedUser;

@@ -13,7 +13,7 @@ async function getUserProfile(req, res) {
 
 async function updateUserProfile(userId, profilePicture) {
 	try {
-		const updatedUser = await userService.updateUserProfile(userId, profilePicture );
+		const updatedUser = await userService.updateUserProfile(userId, profilePicture);
 		return(updatedUser);
 	} catch (error) {
 		console.error('Error handling updateUserProfile:', error);

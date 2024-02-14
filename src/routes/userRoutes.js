@@ -10,15 +10,9 @@ router.get('/profile', userController.getUserProfile);
 router.post('/profile', upload.single('profilePicture'), async (req, res) => {
 	try {
 		const profilePicture = req.body;
-
-		console.log("HEY ICI CA GALEREdans userRoutes: 156666.")
-		console.log(profilePicture);
-
 		const userId = req.userId;
-
 		const savedProfilePicture = await userController.updateUserProfile(userId, profilePicture);
-		console.log(savedProfilePicture);
-
+F
 		res.status(200).json({ message: 'Profile picture and user saved successfully'});
 	} catch (error) {
 		console.error('Error saving profile picture / user:', error);
