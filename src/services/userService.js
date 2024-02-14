@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const fs = require('fs/promises');
+const bcrypt = require('bcrypt');
 
 async function getUserProfile(userId) {
 	try {
@@ -11,12 +12,20 @@ async function getUserProfile(userId) {
 	}
 }
 
-async function updateUserProfile(userId, { username, password, profilePicture }) {
+async function updateUserProfile(userId, profilePicture) {
 	try {
-		const updatedFields = { username, password };
-		console.error(updatedFields);
+		const username = profilePicture.username;
+		const password = profilePicture.password;
+		const hashedPassword = await bcrypt.hash(password, 10);
+		const updatedFields = { username, password: hashedPassword };
 		if (profilePicture) {
-			updatedFields.profilePicture = profilePicture;
+			const filename = Date.now() + '-' + profilePicture.name;
+			const imagePath = `uploads/${filename}`;
+			await fs.writeFile(imagePath, profilePicture.buffer);
+
+			console.log("c'est BREST ICI MDR");
+			console.log(imagePath);
+			updatedFields.profilePicturePath = imagePath;
 		}
 		const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, { new: true });
 		return updatedUser;
@@ -26,21 +35,7 @@ async function updateUserProfile(userId, { username, password, profilePicture })
 	}
 }
 
-async function saveProfilePicture(profilePicture) {
-	try {
-		const filename = Date.now() + '-' + profilePicture.originalname;
-		const imagePath = `uploads/${filename}`;
-		await fs.writeFile(imagePath, profilePicture.buffer);
-
-		return imagePath;
-	} catch (error) {
-		console.error('Error saving profile picture:', error);
-		throw new Error('Failed to save profile picture');
-	}
-}
-
 module.exports = {
 	getUserProfile,
 	updateUserProfile,
-	saveProfilePicture,
 };

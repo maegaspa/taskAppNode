@@ -10,9 +10,11 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	profilePicture: {
-		type: Buffer,
-	},
+	profilePicturePath: {
+		type: String,
+		required : false,
+		default: "",
+	}
 });
 
 const User = mongoose.model('User', userSchema);

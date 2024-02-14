@@ -11,25 +11,13 @@ async function getUserProfile(req, res) {
 	}
 }
 
-async function updateUserProfile(req, res) {
+async function updateUserProfile(userId, profilePicture) {
 	try {
-		const userId = req.userId;
-		const { username, password, profilePicture } = req.body;
-		const updatedUser = await userService.updateUserProfile(userId, { username, password, profilePicture });
-		res.json(updatedUser);
+		const updatedUser = await userService.updateUserProfile(userId, profilePicture );
+		return(updatedUser);
 	} catch (error) {
 		console.error('Error handling updateUserProfile:', error);
 		res.status(500).json({ error: error.message || 'Internal Server Error' });
-	}
-}
-
-async function saveProfilePicture(profilePicture) {
-	try {
-		const savedProfilePicture = await userService.saveProfilePicture(profilePicture);
-		return savedProfilePicture;
-	} catch (error) {
-		console.error('Error handling saveProfilePicture:', error);
-		throw new Error(error.message || 'Internal Server Error');
 	}
 }
 
@@ -37,5 +25,4 @@ async function saveProfilePicture(profilePicture) {
 module.exports = {
 	getUserProfile,
 	updateUserProfile,
-	saveProfilePicture,
 };
